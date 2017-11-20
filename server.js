@@ -3,6 +3,7 @@ var url = require("url");
 var fs = require('fs');
 var querystring = require('querystring');
 var myfirebase = require('./src/my-firebase');
+var mypuppeteer= require('./src/my-puppeteer');
 
 var server = http.createServer(function (req, res) {
   var pathname = url.parse(req.url).pathname;
@@ -13,7 +14,7 @@ var server = http.createServer(function (req, res) {
       if (req.method === 'GET') {
         fs.readFile('./view/home.html', 'UTF-8', function (err, html) {
           if (err) {
-            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.writeHead(400, { 'Content-Type': 'text/html' });
             res.end(err);
           } else {
             res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -22,8 +23,7 @@ var server = http.createServer(function (req, res) {
         });
       }
       break;
-    // submit時
-    case '/ragistration':
+    case '/firebase':
       if (req.method === 'POST') {
         let postData = '';
 
@@ -44,6 +44,12 @@ var server = http.createServer(function (req, res) {
         });
       }
       break;
+    case '/puppeteer':
+        if (req.method === 'POST') {
+          let date = mypuppeteer.tmp();
+          res.end(date);
+        }
+        break;
   }
 });
 
